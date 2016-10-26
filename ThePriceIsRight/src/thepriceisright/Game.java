@@ -48,11 +48,11 @@ public class Game{
     * deals out the shapes
     * @return 
     */
-   public Shape deal(){
+   /*public Shape deal(){
        
        
        
-   }
+   }*/
     
    /**
     * Decides wheather or not to continue the game
