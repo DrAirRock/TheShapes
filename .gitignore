@@ -1,0 +1,7 @@
+ThePriceIsRight/build/*
+ThePriceIsRight/*.xml
+ThePriceIsRight/*.mf
+ThePriceIsRight/nbproject/*
+ThePriceIsRight/test/*
+ThePriceIsRight/*.swp
+ThePriceIsRight/dist/*
