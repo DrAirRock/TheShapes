@@ -65,8 +65,8 @@ public class Game{
     */
    public String[] deal(){
        
-       int randomColor = ran_num.nextInt((this.colors.length - 0 ) + 0) + 1;
-       int randomShape = ran_num.nextInt((this.shapes.length - 0 ) + 0) + 1;
+       int randomColor = ran_num.nextInt(this.colors.length);
+       int randomShape = ran_num.nextInt(this.shapes.length);
       
        String Return_array[] = {colors[randomColor], shapes[randomShape]};
        
