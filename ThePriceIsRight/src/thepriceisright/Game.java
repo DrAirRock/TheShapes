@@ -6,7 +6,6 @@
  * and open the template in the editor.
  */
 package thepriceisright;
-
 import java.util.*;
 /**
  *
@@ -14,12 +13,17 @@ import java.util.*;
  */
 public class Game{
     
+    protected static Random ran_num = new Random();
+    
+    
     final private int MinN = 3;
     final private int MaxN = 7;
     private int N = -1;
     private int trial = 0;
     private int score = 0;
-    
+    private String[] colors;
+    private String[] shapes;
+
     
     /**
      * This makes a new instance of a game 
@@ -44,15 +48,31 @@ public class Game{
     
     }
     
+    public void set_colors (String colors[]){
+        
+        this.colors = colors;
+        
+    }
+    
+    public void set_shapes (String shapes[]){
+        
+        this.shapes = shapes;
+        
+    }
    /** 
     * deals out the shapes
     * @return 
     */
-   /*public Shape deal(){
+   public String[] deal(){
        
+       int randomColor = ran_num.nextInt((this.colors.length - 0 ) + 0) + 1;
+       int randomShape = ran_num.nextInt((this.shapes.length - 0 ) + 0) + 1;
+      
+       String Return_array[] = {colors[randomColor], shapes[randomShape]};
        
-       
-   }*/
+       return Return_array;
+          
+   }
     
    /**
     * Decides wheather or not to continue the game
@@ -100,6 +120,7 @@ public class Game{
    public int get_score( ){
        
        return this.score;
+   
    }
     
 }

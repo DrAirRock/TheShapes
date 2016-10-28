@@ -6,4 +6,19 @@
 	-fx-background-color: linear-gradient(#ed6457, #e04511);
 	-fx-background-radius: 6, 5;
 	-fx-background-insets: 0, 1;
+
+}
+
+.button:hover{
+    
+    
+    /*-fx-background-color : #e54733;*/
+    
+    
+}
+
+.button:selected{
+    
+    -fx-background-color : #e54733;
+    
 }

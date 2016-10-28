@@ -36,9 +36,6 @@ public class Main extends Application{
         btn2.setFont(new Font(20));
         btn2.setText("BUTTON!");
         
-        
-        
-        
         root.getChildren().add(btn);
         root.getChildren().add(btn2);
         
