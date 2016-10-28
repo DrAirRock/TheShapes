@@ -12,12 +12,13 @@
 .button:hover{
     
     
-    /*-fx-background-color : #e54733;*/
+ -fx-background-color: linear-gradient(#e46257, #e04209);
+    
     
     
 }
 
-.button:selected{
+.button:click{
     
     -fx-background-color : #e54733;
     

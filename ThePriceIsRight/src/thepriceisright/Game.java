@@ -11,18 +11,22 @@ import java.util.*;
  *
  * @author sognefej
  */
-public class Game{
+public class Game implements Comparable<Game>{
     
     protected static Random ran_num = new Random();
     
     
     final private int MinN = 3;
     final private int MaxN = 7;
+    
     private int N = -1;
     private int trial = 0;
     private int score = 0;
-    private String[] colors;
-    private String[] shapes;
+    private ArrayList<String> colors = new ArrayList<String>();
+    private ArrayList<String> shapes = new ArrayList<String>();
+    
+    //private String[] colors;
+    //private String[] shapes;
 
     
     /**
@@ -48,27 +52,57 @@ public class Game{
     
     }
     
-    public void set_colors (String colors[]){
+    
+    /**
+     * set the game colors to be used
+     * @param colors 
+     */
+    public void set_colors (String colors[]){   
+        this.colors = new ArrayList(Arrays.asList(colors));     
+    }
+    
+    /**
+     * set the game shapes to be used
+     * @param shapes 
+     */
+    public void set_shapes (String shapes[]){
+        this.shapes = new ArrayList(Arrays.asList(shapes));   
+    }
+    
+    public void add_color (String color){
         
-        this.colors = colors;
+        this.colors.add(color);
         
     }
     
-    public void set_shapes (String shapes[]){
+    public void add_shape (String shape){
         
-        this.shapes = shapes;
+        this.shapes.add(shape);
         
     }
+    
+    public void remove_color (String color){
+        
+        this.colors.remove(color);
+    
+    }
+    
+    public void remove_shape (String shape){
+        
+        this.shapes.remove(shape);
+    }
+    
    /** 
     * deals out the shapes
     * @return 
     */
    public String[] deal(){
-       
-       int randomColor = ran_num.nextInt(this.colors.length);
-       int randomShape = ran_num.nextInt(this.shapes.length);
+  
+        
+       int randomColor = ran_num.nextInt(this.colors.size());
+       int randomShape = ran_num.nextInt(this.shapes.size());
       
-       String Return_array[] = {colors[randomColor], shapes[randomShape]};
+       String Return_array[] = {this.colors.get(randomColor), this.shapes.get(randomShape)};
        
        return Return_array;
           
@@ -123,4 +157,25 @@ public class Game{
    
    }
     
+   
+    @Override 
+    public int compareTo(Game other) throws IllegalArgumentException{
+            if (this.score != other.score){
+            throw new IllegalArgumentException ("Number of sides not equal!");
+        } 
+
+        if(this.score > other.score){
+            return this.score;
+        }
+
+        else if(this.score == other.score){
+            return 0;
+        }
+
+        else{
+            return -5;
+        }
+   
+   
+    }
 }
