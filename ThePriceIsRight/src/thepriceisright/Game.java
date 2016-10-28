@@ -7,6 +7,7 @@
  */
 package thepriceisright;
 import java.util.*;
+
 /**
  *
  * @author sognefej
@@ -22,6 +23,7 @@ public class Game implements Comparable<Game>{
     private int N = -1;
     private int trial = 0;
     private int score = 0;
+    /* NOTE THAT THESE WILL BE CASE SYSETIVE*/
     private ArrayList<String> colors = new ArrayList<String>();
     private ArrayList<String> shapes = new ArrayList<String>();
     
@@ -37,13 +39,10 @@ public class Game implements Comparable<Game>{
      */
     public Game (int N) throws IllegalArgumentException{
         
-        if (N % 2 == 0){
-            throw new IllegalArgumentException ("Integer Must Be odd");
-        }
         
-        else if((N < this.MinN) || (N > this.MaxN)){
+        if((N % 2 == 0 || N < this.MinN) || (N > this.MaxN)){
             
-            throw new IllegalArgumentException ("The interger must be bewtwen " + this.MinN + " and " + this.MaxN);
+            throw new IllegalArgumentException ("The interger must odd and be bewtwen " + this.MinN + " and " + this.MaxN);
             
         }
         else{
@@ -78,7 +77,7 @@ public class Game implements Comparable<Game>{
     public void add_shape (String shape){
         
         this.shapes.add(shape);
-        
+       
     }
     
     public void remove_color (String color){
@@ -92,12 +91,17 @@ public class Game implements Comparable<Game>{
         this.shapes.remove(shape);
     }
     
+    public int get_number_of_shapes (){
+        
+        return this.N;
+        
+    }
+    
    /** 
-    * deals out the shapes
-    * @return 
+    * deals out the shapes should be based on this.N
+    * @return {Color, Shape}
     */
    public String[] deal(){
-  
         
        int randomColor = ran_num.nextInt(this.colors.size());
        int randomShape = ran_num.nextInt(this.shapes.size());
@@ -114,10 +118,12 @@ public class Game implements Comparable<Game>{
     */
    public boolean Continue_Game(){
        
-       this.trial++;
+       
        
        if(this.trial < 3 ){
+           this.trial++;
            return true;
+           
        }
        else{
            return false;
@@ -160,8 +166,8 @@ public class Game implements Comparable<Game>{
    
     @Override 
     public int compareTo(Game other) throws IllegalArgumentException{
-            if (this.score != other.score){
-            throw new IllegalArgumentException ("Number of sides not equal!");
+            if (this.N != other.N){
+            throw new IllegalArgumentException ("Number of shapes not equal!");
         } 
 
         if(this.score > other.score){
