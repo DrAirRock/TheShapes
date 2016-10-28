@@ -19,6 +19,8 @@ public class Main extends Application{
     public void start(Stage primaryStage){
         String css = this.getClass().getResource("/application/resources/style.css").toExternalForm();
         
+        primaryStage.setTitle("The Shapes are Right!");
+        
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
         root.setSpacing(12);
