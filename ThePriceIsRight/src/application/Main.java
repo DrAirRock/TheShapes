@@ -6,6 +6,8 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 
@@ -23,23 +25,10 @@ public class Main extends Application{
         
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
-        root.setSpacing(12);
         
         
-        Button btn = new Button();
-        btn.setMinWidth(100);
-        btn.setMinHeight(50);
-        btn.setFont(new Font(20));
-        btn.setText("BUTTON!");
+        showRules(root);
         
-        Button btn2 = new Button();
-        btn2.setMinWidth(100);
-        btn2.setMinHeight(50);
-        btn2.setFont(new Font(20));
-        btn2.setText("BUTTON!");
-        
-        root.getChildren().add(btn);
-        root.getChildren().add(btn2);
         
         Scene scene = new Scene(root, 700, 700);
         scene.getStylesheets().add(css);
@@ -48,6 +37,36 @@ public class Main extends Application{
         primaryStage.show();
         
         
+    }
+    
+    public void showRules(VBox root){
+        root.getChildren().clear();
+        root.setSpacing(30);
+        
+        VBox rulesField = new VBox();
+        rulesField.setMinHeight(300);
+        rulesField.setMaxWidth(650);
+        rulesField.setAlignment(Pos.CENTER);
+        rulesField.setStyle( "-fx-background-color: linear-gradient(#FFFFFF, #FFFFEE);"
+        );
+        
+        
+        Label rules = new Label();
+        rules.setText("Test");
+        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+        
+        rulesField.getChildren().add(rules);
+        
+        
+        Button continueBtn = new Button();
+        continueBtn.setText("Continue");
+        continueBtn.setFont(Font.font(18));
+        continueBtn.setMinHeight(45);
+        continueBtn.setMaxWidth(110);
+        
+        
+        root.getChildren().add(rulesField);
+        root.getChildren().add(continueBtn);
     }
     
     

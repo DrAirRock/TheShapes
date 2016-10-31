@@ -3,7 +3,7 @@
 }
 
 .button {
-	-fx-background-color: linear-gradient(#ed6457, #e04511);
+	-fx-background-color: linear-gradient(#FA7C3E, #F7572F);
 	-fx-background-radius: 6, 5;
 	-fx-background-insets: 0, 1;
 
@@ -11,15 +11,12 @@
 
 .button:hover{
     
-    
- -fx-background-color: linear-gradient(#e46257, #e04209);
-    
-    
-    
+    -fx-background-color: linear-gradient(#FF8D4F, #F96840);
+ 
 }
 
-.button:click{
+.button:pressed{
     
-    -fx-background-color : #e54733;
+    -fx-background-color: linear-gradient(#EB6B2D, #E6461E);
     
 }
