@@ -28,6 +28,7 @@ public class Main extends Application{
         
         
         showRules(root);
+        System.out.println("Test");
         
         
         Scene scene = new Scene(root, 700, 700);
