@@ -1,4 +1,8 @@
+ThePriceIsRight/*.policy
+ThePriceIsRight/*.mf
+ThePriceIsRight/*.xml
+ThePriceIsRight/nbproject/*
+ThePriceIsRight/dist/*
+ThePriceIsRight/build/*
+ThePriceIsRight/test/*
 
-/ThePriceIsRight/nbproject/private/
-/ThePriceIsRight/build/
-/ThePriceIsRight/dist/
