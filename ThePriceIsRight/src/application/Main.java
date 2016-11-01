@@ -11,9 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ListView;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.scene.text.Font;
 import javafx.event.*;
 import javafx.scene.input.MouseEvent;
+import javafx.beans.binding.Bindings;
 
 
 /**
@@ -175,6 +180,39 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
+        ArrayList<String> colors = new ArrayList();
+        colors.add("Red");
+        colors.add("Blue");
+        colors.add("Yellow");
+        colors.add("Green");
+        
+        ObservableList<String> colorsList = FXCollections.observableList(colors);
+        
+        ListView<String> viewColorsList = new ListView<String>();
+        viewColorsList.setItems(colorsList);
+        viewColorsList.setMaxHeight(142);
+        viewColorsList.setMaxWidth(150);
+        viewColorsList.setEditable(false);
+        
+        
+        
+        ArrayList<String> shapes = new ArrayList();
+        shapes.add("Triangle");
+        shapes.add("Circle");
+        shapes.add("Square");
+        shapes.add("Cylinder");
+        
+        ObservableList<String> shapesList = FXCollections.observableList(shapes);
+        
+        ListView<String> viewShapesList = new ListView<String>();
+        viewShapesList.setItems(shapesList);
+        viewShapesList.setMaxHeight(142);
+        viewShapesList.setMaxWidth(150);
+        viewShapesList.setEditable(false);
+        
+        
+        root.getChildren().add(viewColorsList);
+        root.getChildren().add(viewShapesList);
         
         
     }

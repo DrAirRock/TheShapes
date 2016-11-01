@@ -20,3 +20,21 @@
     -fx-background-color: linear-gradient(#EB6B2D, #E6461E);
     
 }
+
+
+.list-cell{
+    -fx-background-color: #FFFFFF;
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#FF5133, #FF9233);
+    -fx-text-fill: white;
+}
+
+
+.list-cell:filled:hover {
+    -fx-background-color: #F29797
+}
