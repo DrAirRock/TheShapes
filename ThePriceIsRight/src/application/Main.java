@@ -175,12 +175,7 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
-        String numSides = Integer.toString(game.get_number_of_shapes());
-        Label temp = new Label();
-        temp.setText(numSides);
-        temp.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
         
-        root.getChildren().add(temp);
         
     }
     
