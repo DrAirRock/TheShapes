@@ -19,6 +19,8 @@ import javafx.scene.text.Font;
 import javafx.event.*;
 import javafx.scene.input.MouseEvent;
 import javafx.beans.binding.Bindings;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 
 /**
@@ -177,10 +179,11 @@ public class Main extends Application{
     
     
     private void shapesAndColors(VBox root, Game game){
+        
         root.getChildren().clear();
         root.setSpacing(30);
         
-        ArrayList<String> colors = new ArrayList();
+        ArrayList<String> colors = new ArrayList<>();
         colors.add("Red");
         colors.add("Blue");
         colors.add("Yellow");
@@ -188,15 +191,15 @@ public class Main extends Application{
         
         ObservableList<String> colorsList = FXCollections.observableList(colors);
         
-        ListView<String> viewColorsList = new ListView<String>();
+        ListView<String> viewColorsList = new ListView<>();
+        
         viewColorsList.setItems(colorsList);
         viewColorsList.setMaxHeight(142);
         viewColorsList.setMaxWidth(150);
         viewColorsList.setEditable(false);
         
         
-        
-        ArrayList<String> shapes = new ArrayList();
+        ArrayList<String> shapes = new ArrayList<>();
         shapes.add("Triangle");
         shapes.add("Circle");
         shapes.add("Square");
@@ -204,17 +207,25 @@ public class Main extends Application{
         
         ObservableList<String> shapesList = FXCollections.observableList(shapes);
         
-        ListView<String> viewShapesList = new ListView<String>();
+        ListView<String> viewShapesList = new ListView<>();
         viewShapesList.setItems(shapesList);
         viewShapesList.setMaxHeight(142);
         viewShapesList.setMaxWidth(150);
         viewShapesList.setEditable(false);
         
-        
+ 
         root.getChildren().add(viewColorsList);
         root.getChildren().add(viewShapesList);
         
-        
+        //Code for shifting focus of the boxes  
+        root.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            public void handle(KeyEvent ke){
+                if( ke.getCode() == KeyCode.F){
+                    if (viewShapesList.isFocused()){ viewColorsList.requestFocus();}
+                    else viewShapesList.requestFocus();
+                }
+            } 
+        });
     }
     
     public static void main(String[] args){

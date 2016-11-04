@@ -18,7 +18,7 @@ import javafx.scene.shape.*;
  *
  * @author damon
  */
-public class Test2 extends Application{
+public class TestColor extends Application{
     
     public void start(Stage primaryStage){
         String hex = "FF0000";

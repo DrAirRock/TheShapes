@@ -3,36 +3,45 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package thepriceisright;
+package Test_Apps;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+//import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 
 /**
  *
  * @author sognefej
  */
-public class ThePriceIsRight extends Application {
+public class KeyCode extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
+   
+        VBox root = new VBox();
+       
+        TextField code = new TextField();
+        code.setEditable(false);
+        
+  /* will tell you the keycode when you press a key that it recgonizes*/      
+        
+          code.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            public void handle(KeyEvent ke){
+                
+                code.setText("" + ke.getCode());
+                
+            } 
         });
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        
+        root.getChildren().add(code);
         
         Scene scene = new Scene(root, 300, 250);
         

@@ -7,7 +7,7 @@
  */
 package thepriceisright;
 import java.util.*;
-
+import java.lang.String;
 /**
  *
  * @author sognefej
@@ -23,16 +23,25 @@ public class Game implements Comparable<Game>{
     private int Number_of_shapes = -1;
     private int trial = 0;
     private int score = 0;
-    private int shapes_delt = 0;
+    
+    private short shapes_delt = 0;
+    
     /* NOTE THAT THESE WILL BE CASE SYSETIVE*/
-    private ArrayList<String> colors = new ArrayList<String>();
-    private ArrayList<String> shapes = new ArrayList<String>();
-    private Map<String, String[]> shape_map = new HashMap<String, String[]>();
+    private ArrayList<String> colors = new ArrayList<>();
+    private ArrayList<String> shapes = new ArrayList<>();
+    
+    private Map<String, String[]> shape_map = new HashMap<>();
     
     
     //private String[] colors;
     //private String[] shapes;
 
+    
+    public Game(){
+        
+        this(0);
+        
+    }
     
     /**
      * This makes a new instance of a game HashMap
@@ -49,7 +58,9 @@ public class Game implements Comparable<Game>{
             
         }
         else{
+    
             this.Number_of_shapes = Number_of_shapes;
+        
         }
     
     }
@@ -118,8 +129,10 @@ public class Game implements Comparable<Game>{
        String name = "Shape" + this.shapes_delt;
        
        if(!(shape_map.containsValue(Return_array))){
+            
             this.shape_map.put(name, Return_array);
             this.shapes_delt++;
+       
        }
        else{
            
@@ -172,7 +185,7 @@ public class Game implements Comparable<Game>{
    /**
     * add points to the score
     * 
-    * @param points dfas
+    * @param points 
     */
    public void add_points( int points ){
        
@@ -195,6 +208,30 @@ public class Game implements Comparable<Game>{
        this.score = 0;
 
    }
+   
+   /* GAMER INPUT */
+   
+   public boolean user_guess(String color, String shape){
+       
+       String guess = color + "," + shape;
+       
+       String[] guess_array = guess.split(",");
+       
+       if(shape_map.containsValue(guess_array)){
+           
+           return true;
+       
+       }
+       
+       else{
+        
+           return false;
+           
+       }
+ }
+   
+   
+ 
     
    
     @Override 

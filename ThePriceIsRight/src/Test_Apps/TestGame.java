@@ -22,7 +22,7 @@ import thepriceisright.Game;
  *
  * @author sognefej
  */
-public class Test extends Application {
+public class TestGame extends Application {
     
     @Override
     public void start(Stage primaryStage) {      
