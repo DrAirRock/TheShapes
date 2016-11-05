@@ -70,9 +70,9 @@ public class Game implements Comparable<Game>{
      * set the game colors to be used
      * @param colors 
      */
-    public void set_colors (String colors[]){   
+    public void set_colors (ArrayList<String> colors){   
         
-        this.colors = new ArrayList(Arrays.asList(colors));     
+        this.colors = new ArrayList(colors);
     
     }
     
@@ -80,9 +80,9 @@ public class Game implements Comparable<Game>{
      * set the game shapes to be used
      * @param shapes 
      */
-    public void set_shapes (String shapes[]){
+    public void set_shapes (ArrayList<String> shapes){
     
-        this.shapes = new ArrayList(Arrays.asList(shapes));   
+        this.shapes = new ArrayList(shapes);
     
     }
     

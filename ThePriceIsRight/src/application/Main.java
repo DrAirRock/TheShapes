@@ -19,8 +19,10 @@ import javafx.scene.text.Font;
 import javafx.event.*;
 import javafx.scene.input.MouseEvent;
 import javafx.beans.binding.Bindings;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.FontWeight;
 
 
 /**
@@ -78,9 +80,8 @@ public class Main extends Application{
         //Config for the continue button
         Button continueBtn = new Button();
         continueBtn.setText("Continue");
-        continueBtn.setFont(Font.font(18));
-        continueBtn.setMinHeight(45);
-        continueBtn.setMaxWidth(110);
+        continueBtn.setFont(Font.font("", FontWeight.BOLD, 22));
+        continueBtn.setMinHeight(50);
         
         //Adds to root
         root.getChildren().add(rulesField);
@@ -183,49 +184,92 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
+        //Prompts the user to select colors and shapes
+        Label prompt = new Label();
+        prompt.setText("Select colors and types of shapes:");
+        prompt.setStyle("-fx-font-weight: bold; -fx-font-size: 26");
+        
+        //HBox that holds the 2 list views
+        HBox listHolder = new HBox();
+        listHolder.setSpacing(80);
+        listHolder.setAlignment(Pos.CENTER);
+        
+        //The available colors
         ArrayList<String> colors = new ArrayList<>();
         colors.add("Red");
         colors.add("Blue");
         colors.add("Yellow");
         colors.add("Green");
         
+        //Creates an observable list that keeps track of user selections
         ObservableList<String> colorsList = FXCollections.observableList(colors);
         
-        ListView<String> viewColorsList = new ListView<>();
-        
+        //Displays the list to the user
+        //Sets the items to colors and allows for multiple selections
+        ListView<String> viewColorsList = new ListView<>();      
         viewColorsList.setItems(colorsList);
         viewColorsList.setMaxHeight(142);
         viewColorsList.setMaxWidth(150);
         viewColorsList.setEditable(false);
+        viewColorsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
         
+        //Available Shapes
         ArrayList<String> shapes = new ArrayList<>();
         shapes.add("Triangle");
         shapes.add("Circle");
         shapes.add("Square");
         shapes.add("Cylinder");
         
+        //Observable list for shapes
         ObservableList<String> shapesList = FXCollections.observableList(shapes);
         
+        //List view for shapes allowing for multiple selections
         ListView<String> viewShapesList = new ListView<>();
         viewShapesList.setItems(shapesList);
         viewShapesList.setMaxHeight(142);
         viewShapesList.setMaxWidth(150);
         viewShapesList.setEditable(false);
+        viewShapesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
- 
-        root.getChildren().add(viewColorsList);
-        root.getChildren().add(viewShapesList);
         
-        //Code for shifting focus of the boxes  
-        root.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            public void handle(KeyEvent ke){
-                if( ke.getCode() == KeyCode.F){
-                    if (viewShapesList.isFocused()){ viewColorsList.requestFocus();}
-                    else viewShapesList.requestFocus();
+        //Adds list views to list holder
+        listHolder.getChildren().add(viewColorsList);
+        listHolder.getChildren().add(viewShapesList);
+        
+        
+        Label displayListChoices = new Label();
+        
+        Button continueBtn = new Button();
+        continueBtn.setText("Continue");
+        continueBtn.setFont(Font.font("",FontWeight.BOLD, 22));
+        continueBtn.setMinHeight(60);
+        
+        
+        //Adds to root
+        root.getChildren().add(prompt);
+        root.getChildren().add(listHolder);
+        root.getChildren().add(continueBtn);
+        
+        
+        continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent me){
+                if(viewColorsList.getSelectionModel().getSelectedItems().isEmpty() ||
+                        viewShapesList.getSelectionModel().getSelectedItems().isEmpty() ){                    
+                    System.out.println("SELECT AN ITEM YO");
                 }
-            } 
+                else{
+                    System.out.println(viewColorsList.getSelectionModel().getSelectedItems());
+                    System.out.println(viewShapesList.getSelectionModel().getSelectedItems());
+                    ArrayList<String> colors= new ArrayList(viewColorsList.getSelectionModel().getSelectedItems());
+                    game.set_colors(colors);
+                    
+                    ArrayList<String> shapes = new ArrayList(viewShapesList.getSelectionModel().getSelectedItems());
+                    game.set_shapes(shapes);
+                }
+            }
         });
+        
     }
     
     public static void main(String[] args){
