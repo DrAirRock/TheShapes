@@ -182,7 +182,7 @@ public class Main extends Application{
     private void shapesAndColors(VBox root, Game game){
         
         root.getChildren().clear();
-        root.setSpacing(30);
+        root.setSpacing(25);
         
         //Prompts the user to select colors and shapes
         Label prompt = new Label();
@@ -238,37 +238,63 @@ public class Main extends Application{
         listHolder.getChildren().add(viewShapesList);
         
         
-        Label displayListChoices = new Label();
-        
+        //Continue Button
         Button continueBtn = new Button();
         continueBtn.setText("Continue");
         continueBtn.setFont(Font.font("",FontWeight.BOLD, 22));
         continueBtn.setMinHeight(60);
         
         
+        //Gives instructions for multiple selection to user
+        Label instructionLabel = new Label("NOTE: Hold ctrl (or command) and click for multiple selections");
+        instructionLabel.setFont(Font.font(14));
+        
+        
+        //Displays errors to user
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+        
+        
         //Adds to root
         root.getChildren().add(prompt);
         root.getChildren().add(listHolder);
         root.getChildren().add(continueBtn);
+        root.getChildren().add(instructionLabel);
+        root.getChildren().add(errorLabel);
         
         
+        //Handler for clicking the Continue Button
+        //  Makes sure both listViews have at least one selection and sets error field accordingly
+        //  Sets selections in the game logic and continues to next screen
         continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent me){
+                //Tests if the selections are empty
                 if(viewColorsList.getSelectionModel().getSelectedItems().isEmpty() ||
                         viewShapesList.getSelectionModel().getSelectedItems().isEmpty() ){                    
-                    System.out.println("SELECT AN ITEM YO");
+                    errorLabel.setText("Must select at least one color and shape");
                 }
+                
+                //Sets selections in game logic and moves on
                 else{
-                    System.out.println(viewColorsList.getSelectionModel().getSelectedItems());
-                    System.out.println(viewShapesList.getSelectionModel().getSelectedItems());
                     ArrayList<String> colors= new ArrayList(viewColorsList.getSelectionModel().getSelectedItems());
                     game.set_colors(colors);
                     
                     ArrayList<String> shapes = new ArrayList(viewShapesList.getSelectionModel().getSelectedItems());
                     game.set_shapes(shapes);
+                    
+                    playGame(root, game);
                 }
             }
         });
+        
+    }
+    
+    
+    private void playGame(VBox root, Game game){
+        root.getChildren().clear();
+        root.setSpacing(30);
+        
         
     }
     
