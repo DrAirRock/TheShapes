@@ -17,7 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import thepriceisright.Game;
-
+import java.util.*;
 /**
  *
  * @author sognefej
@@ -29,8 +29,13 @@ public class TestGame extends Application {
         
     try{
         
-    String[] colors = {"Red" , "Blue" , "Green" , "Black"};
-    String[] shapes = {"circle" , "square" , "rectangle" , "triangle"};
+    
+     String[] colors_array = {"Red" , "Blue" , "Green" , "Black"};
+     String[] shapes_array = {"circle" , "square" , "rectangle" , "triangle"};  
+     
+    ArrayList<String> colors = new ArrayList(Arrays.asList(colors_array));
+    ArrayList<String> shapes = new ArrayList(Arrays.asList(shapes_array));
+  
     
     
     Game G = new Game(5);
@@ -44,7 +49,7 @@ public class TestGame extends Application {
     
     G.add_color("Orange");
     G.add_shape("octogon");
- 
+    ArrayList<String> co = new ArrayList(Arrays.asList(colors_array));
       // System.out.println(delt[i].toString());
          TextField N = new TextField(); // Text Field
          N.setEditable(false);

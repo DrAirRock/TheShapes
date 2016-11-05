@@ -127,30 +127,20 @@ public class Game implements Comparable<Game>{
        String Return_array[] = {this.colors.get(randomColor), this.shapes.get(randomShape)};
        
        String name = "Shape" + this.shapes_delt;
+      
+       this.shape_map.put(name, Return_array);
        
-       if(!(shape_map.containsValue(Return_array))){
-            
-            this.shape_map.put(name, Return_array);
-            this.shapes_delt++;
-       
-       }
-       else{
-           
-           deal();
-           
-       }
+       this.shapes_delt++;
     
        return Return_array;
           
    }
     
    /**
-    * Decides wheather or not to continue the game
+    * Decides whether or not to continue the game
     * @return boolean 
     */
    public boolean Continue_Game(){
-       
-       
        
        if(this.trial < 3 ){
 
