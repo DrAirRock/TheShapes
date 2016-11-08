@@ -23,14 +23,14 @@ public class Game implements Comparable<Game>{
     private int Number_of_shapes = -1;
     private int trial = 0;
     private int score = 0;
-    
+    //private int current_shape = 0;
     private short shapes_delt = 0;
     
     /* NOTE THAT THESE WILL BE CASE SYSETIVE*/
     private ArrayList<String> colors = new ArrayList<>();
     private ArrayList<String> shapes = new ArrayList<>();
     
-    private Map<String, String[]> shape_map = new HashMap<>();
+    private Map< Integer, String[]> shape_map = new HashMap<>();
     
     
     //private String[] colors;
@@ -126,7 +126,7 @@ public class Game implements Comparable<Game>{
       
        String Return_array[] = {this.colors.get(randomColor), this.shapes.get(randomShape)};
        
-       String name = "Shape" + this.shapes_delt;
+       int name = this.shapes_delt;
       
        this.shape_map.put(name, Return_array);
        
@@ -167,9 +167,12 @@ public class Game implements Comparable<Game>{
    
    }
    
+  
    public void reset_trials(){
        
        this.trial = 0;
+       //this.current_shape = 0;
+       this.shape_map.clear();
        
    }
    /**
@@ -201,13 +204,15 @@ public class Game implements Comparable<Game>{
    
    /* GAMER INPUT */
    
-   public boolean user_guess(String color, String shape){
+   public boolean user_guess(int i, String color, String shape){
        
        String guess = color + "," + shape;
        
        String[] guess_array = guess.split(",");
        
-       if(shape_map.containsValue(guess_array)){
+       String[] cs = this.shape_map.get(i);
+       
+       if(Arrays.equals(cs, guess_array)){
            
            return true;
        

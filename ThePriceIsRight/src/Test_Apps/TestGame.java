@@ -18,6 +18,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import thepriceisright.Game;
 import java.util.*;
+import java.lang.String;
+
 /**
  *
  * @author sognefej
@@ -63,6 +65,10 @@ public class TestGame extends Application {
          Score.setEditable(false);
          Score.setText("" + G.get_score());
          
+         TextField Guess = new TextField(); // Text Field
+         Score.setEditable(false);
+         Score.setText("");
+         
       
         Button btn = new Button();
         btn.setText("test deal");
@@ -80,20 +86,42 @@ public class TestGame extends Application {
                 }   else{
                 Trial.setText("out of turns");
             
-                }      
-            
-            
-               
+                }         
         }
         });
         
-                        
+        Button btn2 = new Button();
+        btn2.setText("test guess");
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                 String guess = Guess.getText();
+                 String[] guess_array = guess.split(" ");
+                 System.out.println(guess_array[0]);
+                 System.out.println(guess_array[1]);
+                if(G.user_guess(0 , guess_array[0] , guess_array[1] )){
+                    
+                    Trial.setText("Yup");
+               
+                }   else{ 
+                    
+                    //G.add_points(7);
+            
+                    Trial.setText("Nope");
+            
+                }      
+            
+        }
+        });
     
         VBox root = new VBox();
         root.getChildren().add(btn);
         root.getChildren().add(N);
         root.getChildren().add(Trial);
         root.getChildren().add(Score);
+        root.getChildren().add(Guess);
+        root.getChildren().add(btn2);
         
         Scene scene = new Scene(root, 300, 250);
         
