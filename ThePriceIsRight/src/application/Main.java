@@ -23,6 +23,9 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.FontWeight;
+import java.util.Iterator;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
 
 /**
@@ -219,7 +222,7 @@ public class Main extends Application{
         shapes.add("Triangle");
         shapes.add("Circle");
         shapes.add("Square");
-        shapes.add("Cylinder");
+        shapes.add("Illuminati");
         
         //Observable list for shapes
         ObservableList<String> shapesList = FXCollections.observableList(shapes);
@@ -295,8 +298,51 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
+        //Gets the number of shapes
+         int numShapes = game.get_number_of_shapes();
+         
+        //Getting a dealing of shapes to use with the game
+        ArrayList<String[]> shapes = new ArrayList<>();      
+        for (int i=0; i<numShapes; i++){
+            shapes.add(game.deal());
+        }
         
+        //Setting up the box that holds the shapes
+        HBox shapeBox = new HBox(20);
+        shapeBox.setAlignment(Pos.CENTER);
+        
+        //Creates an array of stack panes. The size is determined by number of shapes
+        ArrayList<VBox> shapePanes = new ArrayList();
+        for (int i=0; i<numShapes; i++){
+            shapePanes.add(new VBox(20));
+        }
+        
+        drawShapes(shapePanes, shapes);
+        
+        
+        shapeBox.getChildren().addAll(shapePanes);
+        root.getChildren().add(shapeBox);
     }
+    
+    
+    private void drawShapes(ArrayList<VBox> shapePanes, ArrayList<String[]> shapes){
+        
+        int limit = shapePanes.size();
+        for (int i=0; i<limit; i++){
+            VBox shapePane = shapePanes.get(i);
+            String color = shapes.get(i)[0]; //position 0 is color
+            String shape = shapes.get(i)[1];//position 1 is shape
+            
+            if(shape == "Illuminati"){
+                
+            }
+            
+            
+        }
+    }
+    
+    
+    
     
     public static void main(String[] args){
         launch();
