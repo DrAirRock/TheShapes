@@ -24,8 +24,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.FontWeight;
 import java.util.Iterator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Circle;
 
 
 /**
@@ -36,25 +41,29 @@ public class Main extends Application{
     
     @Override
     public void start(Stage primaryStage){
-        //Gets the css file
-        String css = this.getClass().getResource("/application/resources/style.css").toExternalForm();
-        
-        primaryStage.setTitle("The Shapes are Right!");
-        
-        //Creates the root object
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        
-        //Shows the first screen, showRules
-        showRules(root);
-        
-        //Below sets the css and other root properties
-        Scene scene = new Scene(root, 700, 700);
-        scene.getStylesheets().add(css);
-        
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        
+        try{
+            //Gets the css file
+            String css = this.getClass().getResource("/application/resources/style.css").toExternalForm();
+
+            primaryStage.setTitle("The Shapes are Right!");
+
+            //Creates the root object
+            VBox root = new VBox();
+            root.setAlignment(Pos.CENTER);
+
+            //Shows the first screen, showRules
+            showRules(root);
+
+            //Below sets the css and other root properties
+            Scene scene = new Scene(root, 1100, 900);
+            scene.getStylesheets().add(css);
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         
     }
     
@@ -65,8 +74,8 @@ public class Main extends Application{
         
         //Configuration for the rules field
         VBox rulesField = new VBox();
-        rulesField.setMinHeight(300);
-        rulesField.setMaxWidth(650);
+        rulesField.setMinHeight(400);
+        rulesField.setMaxWidth(750);
         rulesField.setAlignment(Pos.CENTER);
         rulesField.setStyle( "-fx-background-color: linear-gradient(#FFFFFF, #FFFFEE);"
         );
@@ -74,7 +83,7 @@ public class Main extends Application{
         //Configuration for the rules text inside rules field
         Label rules = new Label();
         rules.setText("PlaceHolder");
-        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
         
         //Adds rules to rulesField
         rulesField.getChildren().add(rules);
@@ -83,8 +92,8 @@ public class Main extends Application{
         //Config for the continue button
         Button continueBtn = new Button();
         continueBtn.setText("Continue");
-        continueBtn.setFont(Font.font("", FontWeight.BOLD, 22));
-        continueBtn.setMinHeight(50);
+        continueBtn.setFont(Font.font("", FontWeight.BOLD, 26));
+        continueBtn.setMinHeight(60);
         
         //Adds to root
         root.getChildren().add(rulesField);
@@ -110,31 +119,31 @@ public class Main extends Application{
         //Prompt asking the user to select number of shapes
         Label prompt = new Label();
         prompt.setText("Select number of shapes:");
-        prompt.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+        prompt.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
         
         
         //Box holding the three buttons horizontally
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
+        buttonBox.setSpacing(80);
         
         
         //Below are Configs for the 3 button, 5 button, and 7 button respectively
         
         Button threeBtn = new Button();
         threeBtn.setText("3");
-        threeBtn.setFont(Font.font(70));
-        threeBtn.setMinSize(200, 200);
+        threeBtn.setFont(Font.font(80));
+        threeBtn.setMinSize(250, 250);
         
         Button fiveBtn = new Button();
         fiveBtn.setText("5");
-        fiveBtn.setFont(Font.font(70));
-        fiveBtn.setMinSize(200, 200);
+        fiveBtn.setFont(Font.font(80));
+        fiveBtn.setMinSize(250, 250);
         
         Button sevenBtn = new Button();
         sevenBtn.setText("7");
-        sevenBtn.setFont(Font.font(70));
-        sevenBtn.setMinSize(200, 200);
+        sevenBtn.setFont(Font.font(80));
+        sevenBtn.setMinSize(250, 250);
         
         
         //Adds buttons to button box
@@ -219,7 +228,7 @@ public class Main extends Application{
         
         //Available Shapes
         ArrayList<String> shapes = new ArrayList<>();
-        shapes.add("Triangle");
+        shapes.add("Cylinder");
         shapes.add("Circle");
         shapes.add("Square");
         shapes.add("Illuminati");
@@ -308,8 +317,19 @@ public class Main extends Application{
         }
         
         //Setting up the box that holds the shapes
-        HBox shapeBox = new HBox(20);
+        HBox shapeBox = new HBox();
         shapeBox.setAlignment(Pos.CENTER);
+        if (numShapes == 3){
+            shapeBox.setSpacing(150);
+        }
+        else if (numShapes == 5){
+            shapeBox.setSpacing(80);
+        }
+        
+        else if (numShapes == 7){
+            shapeBox.setSpacing(50);
+        }
+        
         
         //Creates an array of stack panes. The size is determined by number of shapes
         ArrayList<VBox> shapePanes = new ArrayList();
@@ -317,8 +337,10 @@ public class Main extends Application{
             shapePanes.add(new VBox(20));
         }
         
+        //Drawes the shapes onto the screen (will add a cover later)
         drawShapes(shapePanes, shapes);
         
+      
         
         shapeBox.getChildren().addAll(shapePanes);
         root.getChildren().add(shapeBox);
@@ -333,15 +355,70 @@ public class Main extends Application{
             String color = shapes.get(i)[0]; //position 0 is color
             String shape = shapes.get(i)[1];//position 1 is shape
             
-            if(shape == "Illuminati"){
+            if(shape == "Illuminati"){               
+                String imagePath = "/application/resources/Illuminati-" + color + ".png";             
+                ImageView image = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
+                image.setFitHeight(110);
+                image.setFitWidth(110);
                 
+                shapePane.getChildren().add(image);
+            }
+            
+            else if (shape == "Cylinder"){
+                Cylinder cylinder = new Cylinder(40, 100);
+                
+                PhongMaterial material = new PhongMaterial();
+                material.setSpecularColor(Color.BLACK);
+                if (color == "Red"){
+                    material.setDiffuseColor(Color.RED);
+                }
+                else if (color == "Blue"){
+                    material.setDiffuseColor(Color.BLUE);
+                }
+                else if (color == "Yellow"){
+                    material.setDiffuseColor(Color.YELLOW);
+                }
+                else if (color == "Green"){
+                    material.setDiffuseColor(Color.GREEN);
+                }
+                else{
+                    System.err.println("meow");
+                }
+                
+                cylinder.setMaterial(material);
+                
+                shapePane.getChildren().add(cylinder);
+                
+            }
+            
+            else if (shape =="Circle"){
+                Circle circle = new Circle(55);
+                if (color == "Yellow"){
+                    circle.setStyle("-fx-fill: gold");
+                }
+                else{
+                    circle.setStyle("-fx-fill: " + color);
+                }
+                
+                shapePane.getChildren().add(circle);
+                
+            }
+            
+            else if (shape == "Square"){
+                Rectangle rectangle = new Rectangle(100, 100);
+                if (color == "Yellow"){
+                    rectangle.setStyle("-fx-fill: gold");
+                }
+                else{
+                    rectangle.setStyle("-fx-fill: " + color);
+                }
+                
+                shapePane.getChildren().add(rectangle);
             }
             
             
         }
     }
-    
-    
     
     
     public static void main(String[] args){
