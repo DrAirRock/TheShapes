@@ -32,6 +32,8 @@ public class TestGame extends Application {
     try{
         
     
+   
+     
      String[] colors_array = {"Red" , "Blue" , "Green" , "Black"};
      String[] shapes_array = {"circle" , "square" , "rectangle" , "triangle"};  
      
@@ -41,6 +43,10 @@ public class TestGame extends Application {
     
     
     Game G = new Game(5);
+    
+  
+   
+    
     //Game G2 = new Game(4);
  
     G.set_colors(colors);
@@ -69,6 +75,11 @@ public class TestGame extends Application {
          Score.setEditable(false);
          Score.setText("");
          
+                  
+         TextField What = new TextField(); // Text Field
+         What.setEditable(false);
+         What.setText("");
+         
       
         Button btn = new Button();
         btn.setText("test deal");
@@ -76,6 +87,11 @@ public class TestGame extends Application {
             
             @Override
             public void handle(ActionEvent event) {
+                 String test = "hello, you, are , coooool"; 
+                 System.out.println(test);
+                 String print = G.shuffle(test);
+                 System.out.println(print);
+                
                 if(G.Continue_Game()){
                 G.add_points(7);
                 String[] delt = G.deal();
@@ -100,6 +116,7 @@ public class TestGame extends Application {
                  String[] guess_array = guess.split(" ");
                  System.out.println(guess_array[0]);
                  System.out.println(guess_array[1]);
+               
                 if(G.user_guess(0 , guess_array[0] , guess_array[1] )){
                     
                     Trial.setText("Yup");
@@ -109,19 +126,36 @@ public class TestGame extends Application {
                     //G.add_points(7);
             
                     Trial.setText("Nope");
-            
+
                 }      
             
         }
         });
     
+        
+        
+        Button btn3 = new Button();
+        btn3.setText("test Dealt");
+        btn3.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+        
+                What.setText(G.What_was_dealt());
+            
+          }
+      
+        });
+        
         VBox root = new VBox();
         root.getChildren().add(btn);
         root.getChildren().add(N);
         root.getChildren().add(Trial);
         root.getChildren().add(Score);
         root.getChildren().add(Guess);
+        root.getChildren().add(What);
         root.getChildren().add(btn2);
+        root.getChildren().add(btn3);
         
         Scene scene = new Scene(root, 300, 250);
         
