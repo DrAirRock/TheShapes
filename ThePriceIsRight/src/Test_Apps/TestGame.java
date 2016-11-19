@@ -88,10 +88,10 @@ public class TestGame extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-                 String test = "hello,you,are,coooool"; 
+                /* String test = "hello,you,are,coooool"; 
                  System.out.println(test);
                  String print = G.shuffle(test);
-                 System.out.println(print);
+                 System.out.println(print);*/
                 
                 if( true){//G.Continue_Game()){
                 G.add_points(7);

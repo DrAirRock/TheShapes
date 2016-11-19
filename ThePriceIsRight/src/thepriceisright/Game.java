@@ -148,7 +148,7 @@ public class Game implements Comparable<Game>{
    }
     
    
-   public String shuffle(String ls){
+   private String shuffle(String ls){
 
       String[] ls1 = ls.split(",");
        
