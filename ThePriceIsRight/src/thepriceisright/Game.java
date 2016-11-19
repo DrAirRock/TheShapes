@@ -36,7 +36,9 @@ public class Game implements Comparable<Game>{
     //private String[] colors;
     //private String[] shapes;
 
-    
+    /**
+     * default constuctor
+     */
     public Game(){
         
         this(0);
@@ -86,40 +88,69 @@ public class Game implements Comparable<Game>{
     
     }
     
+   /**
+    * Add a single color to the Game colors
+    * @param color 
+    */
     public void add_color (String color){
         
         this.colors.add(color);
         
     }
     
+    /**
+     * Add a single shape to the Game shapes
+     * @param shape 
+     */
     public void add_shape (String shape){
         
         this.shapes.add(shape);
        
     }
     
+    /**
+     * remove a single color from the Game colors
+     * @param color 
+     */
     public void remove_color (String color){
         
         this.colors.remove(color);
     
     }
     
+    /**
+     * remove a single shape form the Game shapes
+     * @param shape 
+     */
     public void remove_shape (String shape){
         
         this.shapes.remove(shape);
     }
     
+    /**
+     * 
+     * @return ArrayList  colors
+     */
     public ArrayList<String> get_colors (){
         
         return this.colors;
         
     }
+    
+    /**
+     * 
+     * @return ArrayList shapes
+     */
     public ArrayList<String> get_shapes (){
         
         return this.shapes;
         
     }
     
+    /**
+     * 
+     * @return int number of shapes
+     */
     public int get_number_of_shapes (){
         
         return this.Number_of_shapes;
@@ -147,12 +178,15 @@ public class Game implements Comparable<Game>{
           
    }
     
-   
+   /**
+    * shuffles the strings
+    * @param ls
+    * @return String ret
+    */
    private String shuffle(String ls){
 
       String[] ls1 = ls.split(",");
-       
-   
+      
       List<String> list = new ArrayList<>(Arrays.asList(ls1));
       //int i = list.size();
      // list.remove(i-1);
@@ -167,9 +201,18 @@ public class Game implements Comparable<Game>{
            return ret;
  }
   
+   
+   /**
+    * 
+    * @return String number of the shapes and colors
+    */
    public String What_was_dealt(){
       
        Map<String, Integer> dealt_map = new HashMap<>();
+       Map<Integer, String[]> SM = new HashMap<>(this.shape_map);
+       
+       //SM = this.shape_map;
+       
        String[] k = {};
        Integer i = 0;
        String nkey = "";
@@ -181,13 +224,13 @@ public class Game implements Comparable<Game>{
             
        
             // test = G.What_was_dealt();
-          Iterator it = this.shape_map.entrySet().iterator();
+          Iterator it = SM.entrySet().iterator();
           
           while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             //System.err.println(pair.getKey() + " = " + pair.getValue());
                             
-           k = this.shape_map.get(pair.getKey());
+           k = SM.get(pair.getKey());
            nkey = k[0] + " " + k[1];
            
             if (dealt_map.containsKey(nkey)){
@@ -227,6 +270,8 @@ public class Game implements Comparable<Game>{
     */
    public boolean Continue_Game(){
        
+       this.shape_map.clear();
+       
        if(this.trial < 3 ){
 
            this.trial++;
@@ -252,7 +297,9 @@ public class Game implements Comparable<Game>{
    
    }
    
-  
+  /**
+   * resets the trials
+   */
    public void reset_trials(){
        
        this.trial = 0;
@@ -281,6 +328,9 @@ public class Game implements Comparable<Game>{
    
    }
    
+   /**
+    * resets the score
+    */
    public void reset_score() {
        
        this.score = 0;
@@ -288,7 +338,13 @@ public class Game implements Comparable<Game>{
    }
    
    /* GAMER INPUT */
-   
+   /**
+    * 
+    * @param i
+    * @param color
+    * @param shape
+    * @return boolean
+    **/
    public boolean user_guess(int i, String color, String shape){
        
        String guess = color + "," + shape;
@@ -310,13 +366,15 @@ public class Game implements Comparable<Game>{
        }
  }
    
-   
- 
-    
-   
+  /**
+   * 
+   * @param other
+   * @return greater than equal to or less than s
+   * @throws IllegalArgumentException 
+   */
     @Override 
     public int compareTo(Game other) throws IllegalArgumentException{
-            if (this.Number_of_shapes != other.Number_of_shapes){
+            if (this.Number_of_shapes != other.Number_of_shapes){           
             throw new IllegalArgumentException ("Number of shapes not equal!");
         } 
 
