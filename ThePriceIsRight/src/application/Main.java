@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import java.util.ArrayList;
+import java.util.Collections;
 import javafx.collections.ObservableList;
 import javafx.scene.text.Font;
 import javafx.event.*;
@@ -39,6 +40,10 @@ import javafx.scene.shape.Circle;
  */
 public class Main extends Application{
     
+    //Used to iterate through the shapePanes in playGame()
+    private int iteration;
+    
+    
     @Override
     public void start(Stage primaryStage){
         try{
@@ -55,7 +60,7 @@ public class Main extends Application{
             showRules(root);
 
             //Below sets the css and other root properties
-            Scene scene = new Scene(root, 1100, 900);
+            Scene scene = new Scene(root, 1300, 900);
             scene.getStylesheets().add(css);
 
             primaryStage.setScene(scene);
@@ -307,63 +312,244 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
-        //Gets the number of shapes
-         int numShapes = game.get_number_of_shapes();
-         
-        //Getting a dealing of shapes to use with the game
-        ArrayList<String[]> shapes = new ArrayList<>();      
-        for (int i=0; i<numShapes; i++){
-            shapes.add(game.deal());
+        //If the 3 trials have not been used
+        if(game.Continue_Game()){
+
+            this.iteration = 0;
+
+            //Gets the number of shapes
+             int numShapes = game.get_number_of_shapes();
+
+            //Getting a dealing of shapes to use with the game
+            ArrayList<String[]> shapesDealt = new ArrayList<>();      
+            for (int i=0; i<numShapes; i++){
+                shapesDealt.add(game.deal());
+            }
+
+            //Setting up the box that holds the shapes. Size is based on number of shapes
+            HBox shapeBox = new HBox();
+            shapeBox.setAlignment(Pos.CENTER);
+            if (numShapes == 3){
+                shapeBox.setSpacing(150);
+            }
+            else if (numShapes == 5){
+                shapeBox.setSpacing(80);
+            }
+
+            else if (numShapes == 7){
+                shapeBox.setSpacing(30);
+            }
+
+
+            //Creates an array of stack panes. The size is determined by number of shapes
+            ArrayList<VBox> shapePanes = new ArrayList();
+            for (int i=0; i<numShapes; i++){
+                shapePanes.add(new VBox(60));
+            }
+
+            //Drawes the shapes onto the screen (will add a cover later)
+            drawShapes(shapePanes, shapesDealt);
+
+
+            ObservableList<String> colorsList = FXCollections.observableList(game.get_colors());
+            ObservableList<String> shapesList = FXCollections.observableList(game.get_shapes());
+
+            ArrayList<ListView> colorSelections = new ArrayList<ListView>();
+            ArrayList<ListView> shapeSelections = new ArrayList<ListView>();
+            ArrayList<Label> statusLabels = new ArrayList<Label>();
+
+
+            //Creates two list views displaying the possible color and shapes options
+            //This is done for each dealt shape
+            for (int i = 0; i<numShapes; i++){
+
+                VBox listHolder = new VBox(20);
+                listHolder.setAlignment(Pos.CENTER);
+
+                ListView<String> viewColorsList = new ListView<String>();      
+                viewColorsList.setItems(colorsList);
+                viewColorsList.setMaxHeight(142);
+                viewColorsList.setMaxWidth(150);
+                viewColorsList.setEditable(false);
+
+                ListView<String> viewShapesList = new ListView<String>();      
+                viewShapesList.setItems(shapesList);
+                viewShapesList.setMaxHeight(142);
+                viewShapesList.setMaxWidth(150);
+                viewShapesList.setEditable(false);
+
+                Label statusLabel = new Label();
+
+                //for each shape pane
+                VBox shapePane = shapePanes.get(i);
+
+                listHolder.getChildren().add(viewColorsList);
+                listHolder.getChildren().add(viewShapesList);
+                listHolder.getChildren().add(statusLabel);
+
+                shapePane.getChildren().add(listHolder);
+
+                colorSelections.add(viewColorsList);
+                shapeSelections.add(viewShapesList);
+                statusLabels.add(statusLabel);
+            }
+
+            //Button that the user presses to "lock in" guesses
+            Button guessBtn = new Button("Lock In");
+            guessBtn.setMinHeight(50);
+            guessBtn.setMinWidth(100);
+            guessBtn.setFont(Font.font("", FontWeight.BOLD, 20));
+
+
+
+            //Holds the trial and score labels
+            HBox scoreTrialBox = new HBox(50);
+            scoreTrialBox.setAlignment(Pos.CENTER);
+
+            //Label displaying the trial number to the user
+            Label trialLabel = new Label();
+            trialLabel.setFont(Font.font("", FontWeight.BOLD, 24));
+            trialLabel.setText("Trial: " + game.get_trial());
+
+            //Label displaying the score to the user
+            Label scoreLabel = new Label();
+            scoreLabel.setFont(Font.font("", FontWeight.BOLD, 24));
+            scoreLabel.setText("Score: " + game.get_score());
+
+            //Adds labels to box
+            scoreTrialBox.getChildren().add(trialLabel);
+            scoreTrialBox.getChildren().add(scoreLabel);
+
+
+            //Button that allows user to continue to the next trial
+            //Is only displayed after all shapes have a guess (see event handler for guessBtn)
+            Button continueBtn = new Button("Continue");
+            continueBtn.setMinHeight(50);
+            continueBtn.setMinWidth(100);
+            continueBtn.setFont(Font.font("", FontWeight.BOLD, 20));
+
+
+            //Displays errors to user
+            Label errorLabel = new Label();
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+
+
+            //Adds all shape panes to the shape box
+            shapeBox.getChildren().addAll(shapePanes);
+
+            //Adds to root     
+            root.getChildren().add(shapeBox);
+            root.getChildren().add(guessBtn);
+            root.getChildren().add(scoreTrialBox);
+            root.getChildren().add(errorLabel);
+
+
+
+            continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                public void handle(MouseEvent me){
+                    playGame(root, game);
+                }
+            });
+
+
+            //Runs code that checks that the user provided guesses
+            //Runs code that tests the user's guesses and increments score respectively
+            //Runs code that ensures trial logic is upheld
+            guessBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                public void handle(MouseEvent me){
+                    boolean continueEvent = true;
+
+                    //Checks that each shapePane has a selection
+                    for(int i= iteration; i<numShapes; i++){
+                       ListView colorSelection = colorSelections.get(i);
+                       ListView shapeSelection = shapeSelections.get(i);
+
+                       if(colorSelection.getSelectionModel().getSelectedItems().isEmpty() ||
+                               shapeSelection.getSelectionModel().getSelectedItems().isEmpty() ){
+                           errorLabel.setText("Must select a color and shape type for each shape!");
+                           continueEvent = false;
+                           break;
+                       }
+                    }
+
+                    //Runs if the user provided a guess for every shape
+                    if (continueEvent){
+                        errorLabel.setText("");
+
+                        //Gets all available information into variables
+                        ListView colorSelection = colorSelections.get(iteration);
+                        ListView shapeSelection = shapeSelections.get(iteration);
+
+                        String colorGuess = colorSelection.getSelectionModel().getSelectedItem().toString();
+                        String shapeGuess = shapeSelection.getSelectionModel().getSelectedItem().toString();
+
+                        colorSelection.setItems(FXCollections.observableList(Collections.singletonList(colorGuess)));
+                        shapeSelection.setItems(FXCollections.observableList(Collections.singletonList(shapeGuess)));
+
+                        Label statusLabel = statusLabels.get(iteration);
+
+                        //System.out.println(colorGuess);
+                        //System.out.println(shapeGuess);
+
+                        //If the user guessed correctly
+                        if (game.user_guess(iteration, colorGuess, shapeGuess)){
+                            game.add_points(1);
+                            scoreLabel.setText("Score: " + game.get_score());
+
+                            //System.out.println("Correct");
+
+                            statusLabel.setTextFill(Color.GREEN);
+                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+                            statusLabel.setText("CORRECT!");                     
+                        }
+
+                        //If the user was wrong
+                        else{
+                            //System.out.println("Wrong");
+
+                            statusLabel.setTextFill(Color.RED);
+                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+                            statusLabel.setText("WRONG...");    
+                        }
+
+                        //Iteration is just the current shape we are on
+                        iteration++;
+
+                        //If all shapes have been guessed on, remove guessBtn and add continueBtn
+                        if (iteration >= numShapes){
+                            root.getChildren().remove(guessBtn);
+                            root.getChildren().add(continueBtn);
+                        }
+                    }
+
+                }
+            });
         }
-        
-        //Setting up the box that holds the shapes
-        HBox shapeBox = new HBox();
-        shapeBox.setAlignment(Pos.CENTER);
-        if (numShapes == 3){
-            shapeBox.setSpacing(150);
-        }
-        else if (numShapes == 5){
-            shapeBox.setSpacing(80);
-        }
-        
-        else if (numShapes == 7){
-            shapeBox.setSpacing(50);
-        }
-        
-        
-        //Creates an array of stack panes. The size is determined by number of shapes
-        ArrayList<VBox> shapePanes = new ArrayList();
-        for (int i=0; i<numShapes; i++){
-            shapePanes.add(new VBox(20));
-        }
-        
-        //Drawes the shapes onto the screen (will add a cover later)
-        drawShapes(shapePanes, shapes);
-        
-      
-        
-        shapeBox.getChildren().addAll(shapePanes);
-        root.getChildren().add(shapeBox);
-    }
     
+    }
     
     private void drawShapes(ArrayList<VBox> shapePanes, ArrayList<String[]> shapes){
         
+        //Draws shapes
         int limit = shapePanes.size();
         for (int i=0; i<limit; i++){
+            //Gets the current shape pane to be drawn on
             VBox shapePane = shapePanes.get(i);
             String color = shapes.get(i)[0]; //position 0 is color
             String shape = shapes.get(i)[1];//position 1 is shape
             
-            if(shape == "Illuminati"){               
+            //Draws shapes for Illuminati (NOTE: These are images edited in GIMP
+            if(shape == "Illuminati"){
                 String imagePath = "/application/resources/Illuminati-" + color + ".png";             
                 ImageView image = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
-                image.setFitHeight(110);
-                image.setFitWidth(110);
+                image.setFitHeight(100);
+                image.setFitWidth(100);
                 
                 shapePane.getChildren().add(image);
             }
             
+            //Draws shapes for Cylinders
             else if (shape == "Cylinder"){
                 Cylinder cylinder = new Cylinder(40, 100);
                 
@@ -391,8 +577,9 @@ public class Main extends Application{
                 
             }
             
+            //Draws shapes for Circles
             else if (shape =="Circle"){
-                Circle circle = new Circle(55);
+                Circle circle = new Circle(50);
                 if (color == "Yellow"){
                     circle.setStyle("-fx-fill: gold");
                 }
@@ -404,6 +591,7 @@ public class Main extends Application{
                 
             }
             
+            //Draws shapes for squares
             else if (shape == "Square"){
                 Rectangle rectangle = new Rectangle(100, 100);
                 if (color == "Yellow"){

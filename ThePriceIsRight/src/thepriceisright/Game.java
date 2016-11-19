@@ -271,6 +271,7 @@ public class Game implements Comparable<Game>{
    public boolean Continue_Game(){
        
        this.shape_map.clear();
+       this.shapes_delt = 0;
        
        if(this.trial < 3 ){
 
