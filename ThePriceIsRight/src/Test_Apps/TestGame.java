@@ -34,8 +34,8 @@ public class TestGame extends Application {
     
    
      
-     String[] colors_array = {"Red" , "Blue" , "Green" , "Black"};
-     String[] shapes_array = {"circle" , "square" , "rectangle" , "triangle"};  
+    String[] colors_array = {"Red" , "Blue" /*, "Green" , "Black"*/};
+    String[] shapes_array = {"circle" , "square" /*, "rectangle" , "triangle"*/};  
      
     ArrayList<String> colors = new ArrayList(Arrays.asList(colors_array));
     ArrayList<String> shapes = new ArrayList(Arrays.asList(shapes_array));
@@ -44,19 +44,20 @@ public class TestGame extends Application {
     
     Game G = new Game(5);
     
-  
-   
-    
+
     //Game G2 = new Game(4);
  
     G.set_colors(colors);
     G.set_shapes(shapes);
-    
+   /* 
     G.remove_color("Red");
     G.remove_shape("triangle");
     
     G.add_color("Orange");
     G.add_shape("octogon");
+   
+    */
+    
     ArrayList<String> co = new ArrayList(Arrays.asList(colors_array));
       // System.out.println(delt[i].toString());
          TextField N = new TextField(); // Text Field
@@ -87,12 +88,12 @@ public class TestGame extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-                 String test = "hello, you, are , coooool"; 
+                 String test = "hello,you,are,coooool"; 
                  System.out.println(test);
                  String print = G.shuffle(test);
                  System.out.println(print);
                 
-                if(G.Continue_Game()){
+                if( true){//G.Continue_Game()){
                 G.add_points(7);
                 String[] delt = G.deal();
                 System.out.println(delt[0]);
@@ -140,8 +141,10 @@ public class TestGame extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-        
-                What.setText(G.What_was_dealt());
+            
+            System.out.println(G.What_was_dealt());
+                
+                
             
           }
       

@@ -1,5 +1,3 @@
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,7 +5,9 @@
  */
 package thepriceisright;
 import java.util.*;
+import java.util.Collections;
 import java.lang.String;
+
 /**
  *
  * @author sognefej
@@ -109,6 +109,17 @@ public class Game implements Comparable<Game>{
         this.shapes.remove(shape);
     }
     
+    public ArrayList<String> get_colors (){
+        
+        return this.colors;
+        
+    }
+    public ArrayList<String> get_shapes (){
+        
+        return this.shapes;
+        
+    }
+    
     public int get_number_of_shapes (){
         
         return this.Number_of_shapes;
@@ -131,91 +142,85 @@ public class Game implements Comparable<Game>{
        this.shape_map.put(name, Return_array);
        
        this.shapes_delt++;
-    
+       
        return Return_array;
           
    }
     
    
    public String shuffle(String ls){
-      
+
       String[] ls1 = ls.split(",");
        
-      List<String> item = new ArrayList<>();
-      List<String> list = new ArrayList<>();
-      list = Arrays.asList(ls1);
-      
-      //int len = list.size();
-          
-      while(!list.isEmpty()){
-       
-       int RI = ran_num.nextInt(list.size());
-           
-       if(list.size() < 2 || RI <= 1){
-           String ret = "";
-           
-           for(String s: item){
-               ret = ret + s;
-           }
-           return ret;
-       }
-       else
-       {
-           item.<String>add(list.get(RI));
-           //String it = list.get(RI);
-           if(list.rangeCheck(RI)){
-                 list.<String>remove(RI);
-            }
-       }  
-       }
+   
+      List<String> list = new ArrayList<>(Arrays.asList(ls1));
+      //int i = list.size();
+     // list.remove(i-1);
+      Collections.shuffle(list);
+        
             
-            String ret = "";
-           for(String s: item){
-               ret = ret + s;
+           String ret = "";
+           for(String str: list){
+               ret = ret + " " + str + "(s)"  + ",";
            }
+           
            return ret;
  }
   
    public String What_was_dealt(){
-    
-    
-       String[] temp = {};
-       String return_string = "";
-       String first = "There are";
-       String second = "";
-       String checked;
-       Map<Integer, String> counted_map = new HashMap<>();
-       int Ns = 0;
-
-     
-    Iterator entries = this.shape_map.entrySet().iterator();
-    
-    while(entries.hasNext()){
-        
-        Map.Entry entry = (Map.Entry) entries.next();
-        Integer key = (Integer)entry.getKey();
-        //Integer value = (String[])entry.getValue();
-       // String[] value = (String[])entry.getValue();
-        
-       temp = this.shape_map.get(key);
-       checked = "1 " + temp[0] + " " + temp[1] + "s, ";
+      
+       Map<String, Integer> dealt_map = new HashMap<>();
+       String[] k = {};
+       Integer i = 0;
+       String nkey = "";
+       String ret = "";
+       String shuffle = "";
        
+            //System.out.println(pair.getKey() + " = " + pair.getValue());
+            //k = this.shape_map.get(pair.getKey());
+            
        
-       second = second + " " + checked;
-       
-       
-       counted_map.put(Ns, checked);
-       
-       Ns++;
-       
+            // test = G.What_was_dealt();
+          Iterator it = this.shape_map.entrySet().iterator();
+          
+          while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            //System.err.println(pair.getKey() + " = " + pair.getValue());
+                            
+           k = this.shape_map.get(pair.getKey());
+           nkey = k[0] + " " + k[1];
+           
+            if (dealt_map.containsKey(nkey)){
+            
+                i = dealt_map.get(nkey) + 1;
+                //System.err.println("hello");
+                dealt_map.put(nkey,i);
+            
+            }
+             else{
+                //System.err.println("nooooooooo");
+                dealt_map.put(nkey, 1);
+            
+            }
+            
+             it.remove(); 
     }
-        
-    
-       return_string = first + second;
-       String test = shuffle(return_string);
-       return return_string;
+       
+          
+              Iterator it2 = dealt_map.entrySet().iterator();
+                    while (it2.hasNext()) {
+                         Map.Entry pair = (Map.Entry)it2.next();
+                            //System.err.println(pair.getKey() + " = " + pair.getValue());
+                            shuffle = shuffle + pair.getValue() +  " " + pair.getKey() + ",";
+                            it2.remove(); 
+                        }
+                    
+          ret = shuffle(shuffle);
+          ret = ret.substring(0, ret.length()-1);
+          return "There are: " + ret;  
    }
-   
+    
+       
    /**
     * Decides whether or not to continue the game
     * @return boolean 
