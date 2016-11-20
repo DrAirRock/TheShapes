@@ -32,6 +32,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Sphere;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.Interpolator;
+import javafx.util.Duration;
 
 
 /**
@@ -347,8 +354,9 @@ public class Main extends Application{
                 shapePanes.add(new VBox(60));
             }
 
-            //Drawes the shapes onto the screen (will add a cover later)
-            drawShapes(shapePanes, shapesDealt);
+            //Drawes the shapes onto the screen with the covers
+            //Covers are returned in an ArrayList for use with revealShapes method
+            ArrayList<Circle> covers = drawShapes(shapePanes, shapesDealt);
 
 
             ObservableList<String> colorsList = FXCollections.observableList(game.get_colors());
@@ -393,6 +401,12 @@ public class Main extends Application{
                 shapeSelections.add(viewShapesList);
                 statusLabels.add(statusLabel);
             }
+            
+            
+            //Displays non-sequential types and numbers of shapes
+            Label displayShapeCombo = new Label();
+            displayShapeCombo.setFont(Font.font(20));
+            displayShapeCombo.setText(game.What_was_dealt());
 
             //Button that the user presses to "lock in" guesses
             Button guessBtn = new Button("Lock In");
@@ -440,6 +454,7 @@ public class Main extends Application{
 
             //Adds to root     
             root.getChildren().add(shapeBox);
+            root.getChildren().add(displayShapeCombo);
             root.getChildren().add(guessBtn);
             root.getChildren().add(scoreTrialBox);
             root.getChildren().add(errorLabel);
@@ -488,6 +503,9 @@ public class Main extends Application{
                         shapeSelection.setItems(FXCollections.observableList(Collections.singletonList(shapeGuess)));
 
                         Label statusLabel = statusLabels.get(iteration);
+                        
+                        //Reveals the shape using animation
+                        revealShape(covers.get(iteration));
 
                         //System.out.println(colorGuess);
                         //System.out.println(shapeGuess);
@@ -529,24 +547,32 @@ public class Main extends Application{
     
     }
     
-    private void drawShapes(ArrayList<VBox> shapePanes, ArrayList<String[]> shapes){
+    private ArrayList<Circle> drawShapes(ArrayList<VBox> shapePanes, ArrayList<String[]> shapes){
+        
+        //This is returned to the calling method
+        //Used in another method to "reveal" the shapes using animation
+        ArrayList<Circle> covers = new ArrayList<Circle>();
         
         //Draws shapes
         int limit = shapePanes.size();
         for (int i=0; i<limit; i++){
+            
+            //The stack pane that stacks the shapes with the cover
+            StackPane shapeWithCover = new StackPane();
+            
             //Gets the current shape pane to be drawn on
             VBox shapePane = shapePanes.get(i);
             String color = shapes.get(i)[0]; //position 0 is color
             String shape = shapes.get(i)[1];//position 1 is shape
             
-            //Draws shapes for Illuminati (NOTE: These are images edited in GIMP
+            //Draws shapes for Illuminati (NOTE: These are images edited in GIMP)
             if(shape == "Illuminati"){
                 String imagePath = "/application/resources/Illuminati-" + color + ".png";             
                 ImageView image = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
                 image.setFitHeight(100);
                 image.setFitWidth(100);
                 
-                shapePane.getChildren().add(image);
+                shapeWithCover.getChildren().add(image);
             }
             
             //Draws shapes for Cylinders
@@ -573,7 +599,7 @@ public class Main extends Application{
                 
                 cylinder.setMaterial(material);
                 
-                shapePane.getChildren().add(cylinder);
+                shapeWithCover.getChildren().add(cylinder);
                 
             }
             
@@ -587,7 +613,7 @@ public class Main extends Application{
                     circle.setStyle("-fx-fill: " + color);
                 }
                 
-                shapePane.getChildren().add(circle);
+                shapeWithCover.getChildren().add(circle);
                 
             }
             
@@ -601,13 +627,57 @@ public class Main extends Application{
                     rectangle.setStyle("-fx-fill: " + color);
                 }
                 
-                shapePane.getChildren().add(rectangle);
+                shapeWithCover.getChildren().add(rectangle);
             }
             
             
+            //This will be the "cover" that goes over the shapes
+            Circle cover = new Circle(70);
+            
+            //Mixes different gradients together
+            cover.setStyle("-fx-fill:" +
+                    "linear-gradient(#ffd65b, #e68400)," +
+                    "linear-gradient(#ffef84, #f2ba44)," +
+                    "linear-gradient(#ffea6a, #efaa22)," +
+                    "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                    "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));");
+            
+            //Adds to cover ArrayList
+            covers.add(cover);
+            
+            //Adds cover on top of the shape
+            shapeWithCover.getChildren().add(cover);
+            
+            //Adds to current shapePane
+            shapePane.getChildren().add(shapeWithCover);
+            
         }
+      return covers;
     }
     
+    
+    private void revealShape(Circle cover){
+        //The cover is going to translate while fading from view
+        
+        ParallelTransition fullAnimation = new ParallelTransition();
+        
+        TranslateTransition translate = new TranslateTransition();
+        translate.setDuration(new Duration(1000));
+        translate.setNode(cover);
+        translate.setToY(-100);
+        translate.setInterpolator(Interpolator.LINEAR);
+        
+        FadeTransition fade = new FadeTransition();
+        fade.setDuration(new Duration(1000));
+        fade.setNode(cover);
+        fade.setToValue(0);
+        fade.setInterpolator(Interpolator.LINEAR);
+        
+        fullAnimation.getChildren().add(translate);
+        fullAnimation.getChildren().add(fade);
+        fullAnimation.play();
+        
+    }
     
     public static void main(String[] args){
         launch();
