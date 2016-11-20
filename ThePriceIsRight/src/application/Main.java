@@ -19,12 +19,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.text.Font;
 import javafx.event.*;
 import javafx.scene.input.MouseEvent;
-import javafx.beans.binding.Bindings;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.text.FontWeight;
-import java.util.Iterator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -32,12 +28,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Sphere;
 import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 
@@ -84,21 +79,54 @@ public class Main extends Application{
         root.getChildren().clear();
         root.setSpacing(30);
         
+        
+        Label welcomeMessage = new Label("Welcome to The Shapes are Right!");
+        welcomeMessage.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
+        welcomeMessage.setTextFill(Color.GREEN);
+        
         //Configuration for the rules field
         VBox rulesField = new VBox();
         rulesField.setMinHeight(400);
-        rulesField.setMaxWidth(750);
+        rulesField.setMaxWidth(1200);
         rulesField.setAlignment(Pos.CENTER);
-        rulesField.setStyle( "-fx-background-color: linear-gradient(#FFFFFF, #FFFFEE);"
-        );
+        
         
         //Configuration for the rules text inside rules field
         Label rules = new Label();
-        rules.setText("PlaceHolder");
-        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 30");
+        rules.setText("You are to pick the number of shapes (3, 5, or 7) and the shapes"
+                + " (color and shape type). Once this is selected the game begins.\n\n You, the contestant, are "
+                + "to try and guess what shape is behind the curtain (see below). The shapes behind the "
+                + "curtain are random combinations of your selected shape types and colors.\n\n If you guess "
+                + "the shape correctly, you get a point! If you are wrong, you get nothing...\n\n To give you a "
+                + "bit of edge, the combination of shapes (i.e. 1 Red Triangle, 2 Blue Cylinders, etc...) is"
+                + " given to you and you are allowed to change your guess for the following shapes after each"
+                + " subsequent reveal.\n\n You have 3 trials to get as many points as possible. \nGood luck!");
+        
+        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 22");
+        rules.setWrapText(true);
+        
+        rules.setTextAlignment(TextAlignment.CENTER);
         
         //Adds rules to rulesField
         rulesField.getChildren().add(rules);
+        
+        
+        
+        //This will be the "cover" that goes over the shapes
+        Circle cover = new Circle(70);
+            
+        //Mixes different gradients together
+        cover.setStyle("-fx-fill:" +
+                "linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));");
+        
+        //Label that tells the user what the cover is
+        Label coverExample = new Label("This is the curtain that goes over the shapes (Not the actual shapes)");
+        coverExample.setTextFill(Color.RED);
+        coverExample.setFont(Font.font("", FontWeight.BOLD, 24));
         
         
         //Config for the continue button
@@ -108,8 +136,11 @@ public class Main extends Application{
         continueBtn.setMinHeight(60);
         
         //Adds to root
+        root.getChildren().add(welcomeMessage);
         root.getChildren().add(rulesField);
         root.getChildren().add(continueBtn);
+        root.getChildren().add(cover);
+        root.getChildren().add(coverExample);
         
         
         //Handler for continueBtn. Just moves to the next screen, selectNumShapes.
@@ -317,7 +348,7 @@ public class Main extends Application{
     
     private void playGame(VBox root, Game game){
         root.getChildren().clear();
-        root.setSpacing(30);
+        root.setSpacing(20);
         
         //If the 3 trials have not been used
         if(game.Continue_Game()){
@@ -371,7 +402,7 @@ public class Main extends Application{
             //This is done for each dealt shape
             for (int i = 0; i<numShapes; i++){
 
-                VBox listHolder = new VBox(20);
+                VBox listHolder = new VBox(25);
                 listHolder.setAlignment(Pos.CENTER);
 
                 ListView<String> viewColorsList = new ListView<String>();      
@@ -386,7 +417,8 @@ public class Main extends Application{
                 viewShapesList.setMaxWidth(150);
                 viewShapesList.setEditable(false);
 
-                Label statusLabel = new Label();
+                Label statusLabel = new Label("Guess");
+                statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
 
                 //for each shape pane
                 VBox shapePane = shapePanes.get(i);
@@ -405,8 +437,9 @@ public class Main extends Application{
             
             //Displays non-sequential types and numbers of shapes
             Label displayShapeCombo = new Label();
-            displayShapeCombo.setFont(Font.font(20));
+            displayShapeCombo.setFont(Font.font("", FontWeight.BOLD, 16));
             displayShapeCombo.setText(game.What_was_dealt());
+            displayShapeCombo.setWrapText(true);
 
             //Button that the user presses to "lock in" guesses
             Button guessBtn = new Button("Lock In");
@@ -433,6 +466,18 @@ public class Main extends Application{
             //Adds labels to box
             scoreTrialBox.getChildren().add(trialLabel);
             scoreTrialBox.getChildren().add(scoreLabel);
+            
+            //Holds the cancelButton and guessBtn
+            HBox buttonHolder = new HBox(100);
+            buttonHolder.setAlignment(Pos.CENTER);
+            
+            
+            //Quits the game and returns to the beginning
+            Button cancelButton = new Button("Quit Game");
+            cancelButton.setMinHeight(50);
+            cancelButton.setMinWidth(100);
+            cancelButton.setFont(Font.font("", FontWeight.BOLD, 20));
+            
 
 
             //Button that allows user to continue to the next trial
@@ -441,6 +486,9 @@ public class Main extends Application{
             continueBtn.setMinHeight(50);
             continueBtn.setMinWidth(100);
             continueBtn.setFont(Font.font("", FontWeight.BOLD, 20));
+            
+            buttonHolder.getChildren().add(guessBtn);
+            buttonHolder.getChildren().add(cancelButton);
 
 
             //Displays errors to user
@@ -455,12 +503,22 @@ public class Main extends Application{
             //Adds to root     
             root.getChildren().add(shapeBox);
             root.getChildren().add(displayShapeCombo);
-            root.getChildren().add(guessBtn);
+            root.getChildren().add(buttonHolder);
             root.getChildren().add(scoreTrialBox);
             root.getChildren().add(errorLabel);
 
-
-
+            
+            //Returns the user to the rules screen
+            cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                public void handle(MouseEvent me){
+                    showRules(root);
+                }
+            });
+            
+            
+            //Runs code that resets the dealing while keeping trial and score the same   OR
+            //Runs code that finishes the game (depending on if the trials are up
+            //This is done using recursion
             continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent me){
                     playGame(root, game);
@@ -535,14 +593,24 @@ public class Main extends Application{
                         iteration++;
 
                         //If all shapes have been guessed on, remove guessBtn and add continueBtn
+                        //CancelButton is moved to be horizontal to continueBtn
                         if (iteration >= numShapes){
-                            root.getChildren().remove(guessBtn);
-                            root.getChildren().add(continueBtn);
+                            buttonHolder.getChildren().remove(guessBtn);
+                            buttonHolder.getChildren().remove(cancelButton);
+                            
+                            buttonHolder.getChildren().add(continueBtn);
+                            buttonHolder.getChildren().add(cancelButton);
+                            
                         }
                     }
 
                 }
             });
+        }
+        
+        //User is out of trials
+        else{
+            finalScreen(root, game);
         }
     
     }
@@ -677,6 +745,42 @@ public class Main extends Application{
         fullAnimation.getChildren().add(fade);
         fullAnimation.play();
         
+    }
+    
+    
+    private void finalScreen(VBox root, Game game){
+        
+        root.setSpacing(100);
+        
+        //Tells the user their final score
+        Label finalScore = new Label("FINAL SCORE: " + game.get_score());
+        finalScore.setFont(Font.font("", FontWeight.BOLD, 75));
+        finalScore.setTextFill(Color.GREEN);
+        
+        //Tells the user they are out of trials
+        Label finalPrompt = new Label("You have run out of trials");
+        finalPrompt.setTextFill(Color.RED);
+        finalPrompt.setFont(Font.font("", FontWeight.BOLD, 30));
+        
+        //Button that returns user to rules screen
+        Button quitBtn = new Button("Quit");
+        quitBtn.setMinHeight(50);
+        quitBtn.setMinWidth(100);
+        quitBtn.setFont(Font.font("", FontWeight.BOLD, 20));
+        
+        
+        //Adds to root
+        root.getChildren().add(finalScore);
+        root.getChildren().add(finalPrompt);
+        root.getChildren().add(quitBtn);
+        
+        
+        //Returns the user to rules screen
+        quitBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent me){
+                showRules(root);
+            }
+        });
     }
     
     public static void main(String[] args){
