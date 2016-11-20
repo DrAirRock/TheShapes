@@ -62,7 +62,7 @@ public class Main extends Application{
             showRules(root);
 
             //Below sets the css and other root properties
-            Scene scene = new Scene(root, 1300, 900);
+            Scene scene = new Scene(root, 1300, 750);
             scene.getStylesheets().add(css);
 
             primaryStage.setScene(scene);
@@ -81,12 +81,12 @@ public class Main extends Application{
         
         
         Label welcomeMessage = new Label("Welcome to The Shapes are Right!");
-        welcomeMessage.setStyle("-fx-font-weight: bold; -fx-font-size: 40");
+        welcomeMessage.setStyle("-fx-font-weight: bold; -fx-font-size: 36");
         welcomeMessage.setTextFill(Color.GREEN);
         
         //Configuration for the rules field
         VBox rulesField = new VBox();
-        rulesField.setMinHeight(400);
+        rulesField.setMinHeight(200);
         rulesField.setMaxWidth(1200);
         rulesField.setAlignment(Pos.CENTER);
         
@@ -102,7 +102,7 @@ public class Main extends Application{
                 + " given to you and you are allowed to change your guess for the following shapes after each"
                 + " subsequent reveal.\n\n You have 3 trials to get as many points as possible. \nGood luck!");
         
-        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 22");
+        rules.setStyle("-fx-font-weight: bold; -fx-font-size: 18");
         rules.setWrapText(true);
         
         rules.setTextAlignment(TextAlignment.CENTER);
@@ -265,6 +265,8 @@ public class Main extends Application{
         viewColorsList.setItems(colorsList);
         viewColorsList.setMaxHeight(142);
         viewColorsList.setMaxWidth(150);
+        viewColorsList.setMinHeight(142);
+        viewColorsList.setMinWidth(150);
         viewColorsList.setEditable(false);
         viewColorsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
@@ -284,6 +286,8 @@ public class Main extends Application{
         viewShapesList.setItems(shapesList);
         viewShapesList.setMaxHeight(142);
         viewShapesList.setMaxWidth(150);
+        viewShapesList.setMinHeight(142);
+        viewShapesList.setMinWidth(150);
         viewShapesList.setEditable(false);
         viewShapesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
@@ -418,7 +422,7 @@ public class Main extends Application{
                 viewShapesList.setEditable(false);
 
                 Label statusLabel = new Label("Guess");
-                statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+                statusLabel.setFont(Font.font("", FontWeight.BOLD, 22));
 
                 //for each shape pane
                 VBox shapePane = shapePanes.get(i);
@@ -494,7 +498,7 @@ public class Main extends Application{
             //Displays errors to user
             Label errorLabel = new Label();
             errorLabel.setTextFill(Color.RED);
-            errorLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+            errorLabel.setFont(Font.font("", FontWeight.BOLD, 22));
 
 
             //Adds all shape panes to the shape box
@@ -576,7 +580,7 @@ public class Main extends Application{
                             //System.out.println("Correct");
 
                             statusLabel.setTextFill(Color.GREEN);
-                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 22));
                             statusLabel.setText("CORRECT!");                     
                         }
 
@@ -585,7 +589,7 @@ public class Main extends Application{
                             //System.out.println("Wrong");
 
                             statusLabel.setTextFill(Color.RED);
-                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 26));
+                            statusLabel.setFont(Font.font("", FontWeight.BOLD, 22));
                             statusLabel.setText("WRONG...");    
                         }
 
