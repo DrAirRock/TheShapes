@@ -38,7 +38,8 @@ import javafx.util.Duration;
 
 
 /**
- *
+ *Application source for The Shapes are Right, see rules for how to play.
+ * 
  * @author Damon Gwinn
  */
 public class Main extends Application{
@@ -47,6 +48,10 @@ public class Main extends Application{
     private int iteration;
     
     
+    /**
+     * The starting point for the GUI. Sets the stage, scene, and root pane.
+     * @param primaryStage Stage for displaying the GUI.
+     */
     @Override
     public void start(Stage primaryStage){
         try{
@@ -75,6 +80,11 @@ public class Main extends Application{
         
     }
     
+    
+    /**
+     * The screen that displays the rules to the user.
+     * @param root The root pane.
+     */
     private void showRules(VBox root){
         //Clears root and sets spacing
         root.getChildren().clear();
@@ -146,6 +156,7 @@ public class Main extends Application{
         
         //Handler for continueBtn. Just moves to the next screen, selectNumShapes.
         continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 selectNumShapes(root);
             }
@@ -154,6 +165,11 @@ public class Main extends Application{
     }
     
     
+    /**
+     * The screen that allows the user to select the number of shapes.
+     * Possible shape options are 3, 5, and 7. The Game object is created here.
+     * @param root The root pane.
+     */
     private void selectNumShapes(VBox root){
         //Clears root
         root.getChildren().clear();
@@ -204,6 +220,7 @@ public class Main extends Application{
         //All handlers move on to shapesAndColors screen
         
         threeBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 //The game logic from package thepriceisright
                 Game game = new Game(3);
@@ -214,6 +231,7 @@ public class Main extends Application{
         
         
         fiveBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 //The game logic from package thepriceisright
                 Game game = new Game(5);
@@ -224,6 +242,7 @@ public class Main extends Application{
         
         
         sevenBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 //The game logic from package thepriceisright
                 Game game = new Game(7);
@@ -235,6 +254,13 @@ public class Main extends Application{
     }
     
     
+    /**
+     * Screen that allows the user to select the type of shapes and the color.
+     * Possible combinations are: (Red, Blue, Yellow, Green) - (Cylinder, Circle, Square, Illuminati).
+     * The selected shape types and colors are put into the Game object.
+     * @param root The root pane.
+     * @param game Object that does the game logic (See documentation).
+     */
     private void shapesAndColors(VBox root, Game game){
         
         root.getChildren().clear();
@@ -328,6 +354,7 @@ public class Main extends Application{
         //  Makes sure both listViews have at least one selection and sets error field accordingly
         //  Sets selections in the game logic and continues to next screen
         continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 //Tests if the selections are empty
                 if(viewColorsList.getSelectionModel().getSelectedItems().isEmpty() ||
@@ -351,6 +378,13 @@ public class Main extends Application{
     }
     
     
+    /**
+     * Screen where gameplay takes place.
+     * The Game object is the primary logic and checks whether guesses are correct.
+     * Game object also keeps track of the score and number trials.
+     * @param root The root pane.
+     * @param game Object that does the game logic (See documentation).
+     */
     private void playGame(VBox root, Game game){
         root.getChildren().clear();
         root.setSpacing(10);
@@ -515,6 +549,7 @@ public class Main extends Application{
             
             //Returns the user to the rules screen
             cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                @Override
                 public void handle(MouseEvent me){
                     showRules(root);
                 }
@@ -525,6 +560,7 @@ public class Main extends Application{
             //Runs code that finishes the game (depending on if the trials are up
             //This is done using recursion
             continueBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                @Override
                 public void handle(MouseEvent me){
                     playGame(root, game);
                 }
@@ -535,6 +571,7 @@ public class Main extends Application{
             //Runs code that tests the user's guesses and increments score respectively
             //Runs code that ensures trial logic is upheld
             guessBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                @Override
                 public void handle(MouseEvent me){
                     boolean continueEvent = true;
 
@@ -616,6 +653,14 @@ public class Main extends Application{
     
     }
     
+    
+    /**
+     * Method used by the playGame method to draw the shapes to the screen with a cover.
+     * The cover is returned in array form for animation purposes (See revealShapes method).
+     * @param shapePanes The panes where the shapes will be drawn.
+     * @param shapes The dealt shapes from Game object. Color at position 0, shape at position 1.
+     * @return Array containing the covers (See revealShapes method).
+     */
     private ArrayList<Circle> drawShapes(ArrayList<VBox> shapePanes, ArrayList<String[]> shapes){
         
         //This is returned to the calling method
@@ -725,6 +770,10 @@ public class Main extends Application{
     }
     
     
+    /**
+     * Takes the cover off the shapes using animation. This is how the shapes are revealed to the user.
+     * @param cover The cover blocking the shape to be revealed.
+     */
     private void revealShape(Circle cover){
         //The cover is going to translate while fading from view
         
@@ -749,6 +798,11 @@ public class Main extends Application{
     }
     
     
+    /**
+     * The final screen that displays the final score to the user.
+     * @param root The root pane.
+     * @param game Object that does the game logic (See Documentation).
+     */
     private void finalScreen(VBox root, Game game){
         
         root.setSpacing(100);
@@ -791,6 +845,7 @@ public class Main extends Application{
         
         //Returns the user to rules screen
         resetBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 showRules(root);
             }
@@ -799,6 +854,7 @@ public class Main extends Application{
         
         //Quits the entire game
         quitBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
             public void handle(MouseEvent me){
                 Platform.exit();
             }
