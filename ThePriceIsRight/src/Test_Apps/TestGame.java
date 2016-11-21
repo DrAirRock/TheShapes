@@ -58,7 +58,7 @@ public class TestGame extends Application {
    
     */
     
-    ArrayList<String> co = new ArrayList(Arrays.asList(colors_array));
+    ArrayList<String> color = new ArrayList(Arrays.asList(colors_array));
       // System.out.println(delt[i].toString());
          TextField N = new TextField(); // Text Field
          N.setEditable(false);
@@ -93,7 +93,7 @@ public class TestGame extends Application {
                  String print = G.shuffle(test);
                  System.out.println(print);*/
                 
-                if( true){//G.Continue_Game()){
+                if(G.Continue_Game()){
                 G.add_points(7);
                 String[] delt = G.deal();
                 System.out.println(delt[0]);
