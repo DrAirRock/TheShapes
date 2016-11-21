@@ -538,26 +538,22 @@ public class Main extends Application{
                 public void handle(MouseEvent me){
                     boolean continueEvent = true;
 
-                    //Checks that each shapePane has a selection
-                    for(int i= iteration; i<numShapes; i++){
-                       ListView colorSelection = colorSelections.get(i);
-                       ListView shapeSelection = shapeSelections.get(i);
+                    //Checks that current shapePane has a selection
+                    ListView colorSelection = colorSelections.get(iteration);
+                    ListView shapeSelection = shapeSelections.get(iteration);
 
-                       if(colorSelection.getSelectionModel().getSelectedItems().isEmpty() ||
-                               shapeSelection.getSelectionModel().getSelectedItems().isEmpty() ){
-                           errorLabel.setText("Must select a color and shape type for each shape!");
-                           continueEvent = false;
-                           break;
+                    if(colorSelection.getSelectionModel().getSelectedItems().isEmpty() ||
+                            shapeSelection.getSelectionModel().getSelectedItems().isEmpty() ){
+                        
+                         errorLabel.setText("Must select a color and shape type for current shape!");
+                         continueEvent = false;
                        }
-                    }
 
                     //Runs if the user provided a guess for every shape
                     if (continueEvent){
                         errorLabel.setText("");
 
                         //Gets all available information into variables
-                        ListView colorSelection = colorSelections.get(iteration);
-                        ListView shapeSelection = shapeSelections.get(iteration);
 
                         String colorGuess = colorSelection.getSelectionModel().getSelectedItem().toString();
                         String shapeGuess = shapeSelection.getSelectionModel().getSelectedItem().toString();
