@@ -32,6 +32,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.Interpolator;
+import javafx.application.Platform;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -62,7 +63,7 @@ public class Main extends Application{
             showRules(root);
 
             //Below sets the css and other root properties
-            Scene scene = new Scene(root, 1300, 750);
+            Scene scene = new Scene(root, 1300, 650);
             scene.getStylesheets().add(css);
 
             primaryStage.setScene(scene);
@@ -77,7 +78,7 @@ public class Main extends Application{
     private void showRules(VBox root){
         //Clears root and sets spacing
         root.getChildren().clear();
-        root.setSpacing(30);
+        root.setSpacing(20);
         
         
         Label welcomeMessage = new Label("Welcome to The Shapes are Right!");
@@ -352,7 +353,7 @@ public class Main extends Application{
     
     private void playGame(VBox root, Game game){
         root.getChildren().clear();
-        root.setSpacing(20);
+        root.setSpacing(10);
         
         //If the 3 trials have not been used
         if(game.Continue_Game()){
@@ -386,7 +387,7 @@ public class Main extends Application{
             //Creates an array of stack panes. The size is determined by number of shapes
             ArrayList<VBox> shapePanes = new ArrayList();
             for (int i=0; i<numShapes; i++){
-                shapePanes.add(new VBox(60));
+                shapePanes.add(new VBox(30));
             }
 
             //Drawes the shapes onto the screen with the covers
@@ -406,7 +407,7 @@ public class Main extends Application{
             //This is done for each dealt shape
             for (int i = 0; i<numShapes; i++){
 
-                VBox listHolder = new VBox(25);
+                VBox listHolder = new VBox(10);
                 listHolder.setAlignment(Pos.CENTER);
 
                 ListView<String> viewColorsList = new ListView<String>();      
@@ -477,7 +478,7 @@ public class Main extends Application{
             
             
             //Quits the game and returns to the beginning
-            Button cancelButton = new Button("Quit Game");
+            Button cancelButton = new Button("Restart");
             cancelButton.setMinHeight(50);
             cancelButton.setMinWidth(100);
             cancelButton.setFont(Font.font("", FontWeight.BOLD, 20));
@@ -498,7 +499,7 @@ public class Main extends Application{
             //Displays errors to user
             Label errorLabel = new Label();
             errorLabel.setTextFill(Color.RED);
-            errorLabel.setFont(Font.font("", FontWeight.BOLD, 22));
+            errorLabel.setFont(Font.font("", FontWeight.BOLD, 16));
 
 
             //Adds all shape panes to the shape box
@@ -641,15 +642,15 @@ public class Main extends Application{
             if(shape == "Illuminati"){
                 String imagePath = "/application/resources/Illuminati-" + color + ".png";             
                 ImageView image = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
-                image.setFitHeight(100);
-                image.setFitWidth(100);
+                image.setFitHeight(75);
+                image.setFitWidth(75);
                 
                 shapeWithCover.getChildren().add(image);
             }
             
             //Draws shapes for Cylinders
             else if (shape == "Cylinder"){
-                Cylinder cylinder = new Cylinder(40, 100);
+                Cylinder cylinder = new Cylinder(30, 75);
                 
                 PhongMaterial material = new PhongMaterial();
                 material.setSpecularColor(Color.BLACK);
@@ -691,7 +692,7 @@ public class Main extends Application{
             
             //Draws shapes for squares
             else if (shape == "Square"){
-                Rectangle rectangle = new Rectangle(100, 100);
+                Rectangle rectangle = new Rectangle(75, 75);
                 if (color == "Yellow"){
                     rectangle.setStyle("-fx-fill: gold");
                 }
@@ -704,7 +705,7 @@ public class Main extends Application{
             
             
             //This will be the "cover" that goes over the shapes
-            Circle cover = new Circle(70);
+            Circle cover = new Circle(60);
             
             //Mixes different gradients together
             cover.setStyle("-fx-fill:" +
@@ -766,23 +767,44 @@ public class Main extends Application{
         finalPrompt.setTextFill(Color.RED);
         finalPrompt.setFont(Font.font("", FontWeight.BOLD, 30));
         
+        //Holds the reset and quit buttons
+        HBox buttonBox = new HBox(50);
+        buttonBox.setAlignment(Pos.CENTER);
+        
         //Button that returns user to rules screen
+        Button resetBtn = new Button("Restart");
+        resetBtn.setMinHeight(50);
+        resetBtn.setMinWidth(100);
+        resetBtn.setFont(Font.font("", FontWeight.BOLD, 20));
+        
+        //Quits the entire game
         Button quitBtn = new Button("Quit");
         quitBtn.setMinHeight(50);
         quitBtn.setMinWidth(100);
         quitBtn.setFont(Font.font("", FontWeight.BOLD, 20));
         
+        buttonBox.getChildren().add(resetBtn);
+        buttonBox.getChildren().add(quitBtn);
+        
         
         //Adds to root
         root.getChildren().add(finalScore);
         root.getChildren().add(finalPrompt);
-        root.getChildren().add(quitBtn);
+        root.getChildren().add(buttonBox);
         
         
         //Returns the user to rules screen
-        quitBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        resetBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent me){
                 showRules(root);
+            }
+        });
+        
+        
+        //Quits the entire game
+        quitBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent me){
+                Platform.exit();
             }
         });
     }
